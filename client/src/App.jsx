@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { ArrowUpRight, Check, Clipboard, Link2, Sparkles } from 'lucide-react';
 
 const apiOrigin = import.meta.env.VITE_API_URL
-  || (import.meta.env.DEV ? 'http://localhost:5000' : window.location.origin);
+  || (import.meta.env.DEV ? 'https://url-shortner-alpha-topaz.vercel.app' : window.location.origin);
 const apiUrl = (path) => `${apiOrigin}${path}`;
 const getShortUrl = (shortCode) => `${apiOrigin}/${shortCode}`;
 
