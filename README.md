@@ -22,3 +22,22 @@ npm run dev
 Open `http://localhost:5173`.
 
 The API exposes `POST /api/links`, `GET /api/links`, and `GET /:shortCode` for redirects.
+
+## Deploy to Vercel
+
+Deploy `client` and `server` as two separate Vercel projects, setting each project's **Root Directory** to its folder.
+
+For the **server** project, add these environment variables:
+
+```text
+MONGO_URI=your MongoDB Atlas connection string
+CLIENT_URL=https://your-client.vercel.app
+```
+
+For the **client** project, add:
+
+```text
+VITE_API_URL=https://your-server.vercel.app
+```
+
+Deploy the server first so its URL can be used as `VITE_API_URL` in the client project. MongoDB Atlas must allow connections from Vercel by configuring its network access rules.

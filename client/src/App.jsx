@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { ArrowUpRight, Check, Clipboard, Link2, Sparkles } from 'lucide-react';
 
-const apiOrigin = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const apiOrigin = import.meta.env.VITE_API_URL
+  || (import.meta.env.DEV ? 'http://localhost:5000' : window.location.origin);
+const apiUrl = (path) => `${apiOrigin}${path}`;
 const getShortUrl = (shortCode) => `${apiOrigin}/${shortCode}`;
 
 function App() {
@@ -13,7 +15,7 @@ function App() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch('/api/links')
+    fetch(apiUrl('/api/links'))
       .then((response) => response.ok ? response.json() : [])
       .then(setLinks)
       .catch(() => setLinks([]));
@@ -26,7 +28,7 @@ function App() {
     setLoading(true);
 
     try {
-      const response = await fetch('/api/links', {
+      const response = await fetch(apiUrl('/api/links'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ originalUrl: url })

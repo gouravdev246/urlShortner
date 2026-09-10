@@ -10,6 +10,14 @@ const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
 
 app.use(cors({ origin: clientUrl }));
 app.use(express.json());
+app.use(async (_request, response, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    response.status(503).json({ message: 'Database connection unavailable.' });
+  }
+});
 
 const createShortCode = () => crypto.randomBytes(4).toString('base64url');
 
@@ -81,4 +89,8 @@ const startServer = async () => {
   }
 };
 
-startServer();
+if (!process.env.VERCEL) {
+  startServer();
+}
+
+export default app;
