@@ -6,7 +6,7 @@ import connectDB from './db/dbConfig.js';
 
 const app = express();
 const port = process.env.PORT || 5000;
-const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+const clientUrl = (process.env.CLIENT_URL || 'http://localhost:5173').replace(/\/+$/, '');
 
 app.use(cors({ origin: clientUrl }));
 app.use(express.json());
