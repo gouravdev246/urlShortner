@@ -6,21 +6,39 @@ import mongoose from 'mongoose';
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(currentDirectory, '../../.env') });
 
-const connectDB = async () => {
-    if (mongoose.connection.readyState >= 1) {
-        return;
+mongoose.set('strictQuery', true);
+
+const connectionCache = globalThis.__mongooseConnectionCache || {
+    promise: null
+};
+globalThis.__mongooseConnectionCache = connectionCache;
+
+export const connectDB = async () => {
+    const mongoUri = process.env.MONGODB_URI || process.env.MONGO_URI;
+
+    if (!mongoUri) {
+        throw new Error('MONGODB_URI environment variable is missing');
+    }
+
+    if (mongoose.connection.readyState === 1) {
+        return mongoose.connection;
+    }
+
+    if (!connectionCache.promise) {
+        connectionCache.promise = mongoose.connect(mongoUri, {
+            bufferCommands: false
+        });
     }
 
     try {
-        if (!process.env.MONGO_URI) {
-            throw new Error('MONGO_URI is missing from server/.env');
-        }
-
-        await mongoose.connect(process.env.MONGO_URI);
-        console.log('MongoDB connected');
+        const db = await connectionCache.promise;
+        console.log('MongoDB connected successfully');
+        return db.connection;
     } catch (error) {
-        console.error('Error connecting to MongoDB:', error.message);
+        connectionCache.promise = null;
+        console.error('MongoDB connection error:', error.message);
         throw error;
     }
 };
+
 export default connectDB;

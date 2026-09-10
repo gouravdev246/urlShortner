@@ -30,7 +30,7 @@ Deploy `client` and `server` as two separate Vercel projects, setting each proje
 For the **server** project, add these environment variables:
 
 ```text
-MONGO_URI=your MongoDB Atlas connection string
+MONGODB_URI=your MongoDB Atlas connection string
 CLIENT_URL=https://your-client.vercel.app
 ```
 
