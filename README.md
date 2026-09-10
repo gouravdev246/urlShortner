@@ -40,4 +40,6 @@ For the **client** project, add:
 VITE_API_URL=https://your-server.vercel.app
 ```
 
+`VITE_API_URL` is embedded into the client during the Vercel build. After adding or changing it in Vercel, redeploy the client; refreshing the existing deployment is not enough.
+
 Deploy the server first so its URL can be used as `VITE_API_URL` in the client project. MongoDB Atlas must allow connections from Vercel by configuring its network access rules.

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { ArrowUpRight, Check, Clipboard, Link2, Sparkles } from 'lucide-react';
 
 const apiOrigin = import.meta.env.VITE_API_URL
-  || (import.meta.env.DEV ? 'https://url-shortner-alpha-topaz.vercel.app' : window.location.origin);
+  || (import.meta.env.DEV ? 'http://localhost:5000' : 'https://url-shortner-alpha-topaz.vercel.app');
 const apiUrl = (path) => `${apiOrigin}${path}`;
 const getShortUrl = (shortCode) => `${apiOrigin}/${shortCode}`;
 
@@ -89,7 +89,7 @@ function App() {
           <div className="result" aria-live="polite">
             <div>
               <span className="result-label">Your short link is ready</span>
-              <a href={`/${createdLink.shortCode}`} target="_blank" rel="noreferrer">{getShortUrl(createdLink.shortCode)}</a>
+              <a href={getShortUrl(createdLink.shortCode)} target="_blank" rel="noreferrer">{getShortUrl(createdLink.shortCode)}</a>
             </div>
             <button className="copy-button" onClick={() => copyLink(createdLink.shortCode)} aria-label="Copy short link">
               {copied === createdLink.shortCode ? <Check size={18} /> : <Clipboard size={18} />}
@@ -109,7 +109,7 @@ function App() {
             {links.map((link) => (
               <article className="link-row" key={link._id}>
                 <div className="link-icon"><Link2 size={17} /></div>
-                <div className="link-details"><a href={`/${link.shortCode}`}>{getShortUrl(link.shortCode)}</a><span>{link.originalUrl}</span></div>
+                <div className="link-details"><a href={getShortUrl(link.shortCode)}>{getShortUrl(link.shortCode)}</a><span>{link.originalUrl}</span></div>
                 <span className="clicks">{link.clicks} {link.clicks === 1 ? 'click' : 'clicks'}</span>
                 <button className="icon-button" onClick={() => copyLink(link.shortCode)} aria-label={`Copy ${link.shortCode}`} title="Copy link">
                   {copied === link.shortCode ? <Check size={17} /> : <Clipboard size={17} />}
